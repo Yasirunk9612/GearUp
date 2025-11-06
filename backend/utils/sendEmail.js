@@ -27,13 +27,25 @@ const buildTransporter = () => {
       host: process.env.EMAIL_HOST,
       port: Number(process.env.EMAIL_PORT) || 587,
       secure: Number(process.env.EMAIL_PORT) === 465,
-      auth: { user, pass }
+      auth: { user, pass },
+      // timeouts (ms) - configurable via env, helpful for diagnosing network issues
+      connectionTimeout: Number(process.env.EMAIL_CONNECTION_TIMEOUT) || 10000,
+      greetingTimeout: Number(process.env.EMAIL_GREETING_TIMEOUT) || 5000,
+      socketTimeout: Number(process.env.EMAIL_SOCKET_TIMEOUT) || 10000,
+      logger: process.env.EMAIL_DEBUG === 'true',
+      debug: process.env.EMAIL_DEBUG === 'true',
+      tls: {
+        // allow override for servers with self-signed certs (set to 'false' in env to skip)
+        rejectUnauthorized: process.env.EMAIL_TLS_REJECT_UNAUTHORIZED !== 'false'
+      }
     });
   }
 
   return nodemailer.createTransport({
     service: 'gmail',
-    auth: { user, pass }
+    auth: { user, pass },
+    logger: process.env.EMAIL_DEBUG === 'true',
+    debug: process.env.EMAIL_DEBUG === 'true'
   });
 };
 

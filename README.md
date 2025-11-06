@@ -2,6 +2,12 @@
 
 GearUp is a small full-stack demo that showcases a Node/Express + MongoDB backend and a React frontend. The project implements product listing, cart management, customer creation, and order creation (with a simple email helper). It includes a seeder to populate example products.
 
+## Live demo (deployed)
+
+- Visit the live front-end deployment: **https://gear-up-ashy-nine.vercel.app/**
+
+> Note: after a fresh deployment the frontend may attempt to contact the backend immediately. Please wait up to **50 seconds** for the backend to start and become reachable — this is especially relevant when the backend was just (re)deployed or cold-started on the hosting provider.
+
 This README documents how to get the project running locally, environment variables, available npm scripts, a short API overview, and troubleshooting steps.
 
 ## Tech stack
