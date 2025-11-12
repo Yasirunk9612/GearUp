@@ -77,7 +77,17 @@ export const createOrder = asyncHandler(async (req, res) => {
       <ul>
         ${orderItems.map(i => `<li>${i.name} (x${i.qty}) - ${i.price}</li>`).join('')}
       </ul>
-      <p>Delivery details: ${delivery.line1 || ''} ${delivery.city || ''}</p>
+      <h3>Delivery details</h3>
+      <p>
+        ${delivery.name ? `<strong>${delivery.name}</strong><br/>` : ''}
+        ${delivery.line1 ? `${delivery.line1}<br/>` : ''}
+        ${delivery.line2 ? `${delivery.line2}<br/>` : ''}
+        ${delivery.city ? `${delivery.city}, ` : ''}${delivery.state ? `${delivery.state}<br/>` : ''}
+        ${delivery.postalCode ? `Postal: ${delivery.postalCode}<br/>` : ''}
+        ${delivery.country ? `${delivery.country}<br/>` : ''}
+        ${delivery.phone ? `Phone: ${delivery.phone}<br/>` : ''}
+        ${delivery.instructions ? `<em>Instructions: ${delivery.instructions}</em><br/>` : ''}
+      </p>
     `;
     await sendEmail({ to: customer.email, subject, html });
     order.emailSent = true;

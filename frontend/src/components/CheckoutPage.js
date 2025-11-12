@@ -9,7 +9,17 @@ export default function CheckoutPage() {
   const [cart, setCart] = useState(null);
   const { customer, setCustomer } = useCustomer();
   const navigate = useNavigate();
-  const [delivery, setDelivery] = useState({ name: '', phone: '', address: '' });
+  const [delivery, setDelivery] = useState({
+    name: '',
+    phone: '',
+    line1: '',
+    line2: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: '',
+    instructions: ''
+  });
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState(null);
   const [err, setErr] = useState(null);
@@ -19,9 +29,9 @@ export default function CheckoutPage() {
     if (!customer) return setErr('Please save customer first.');
     
     setDelivery(prev => ({
+      ...prev,
       name: prev.name || customer.name || '',
-      phone: prev.phone || customer.phone || '',
-      address: prev.address || ''
+      phone: prev.phone || customer.phone || ''
     }));
     try {
       const data = await getCartByCustomer(customer._id || customer.id);
@@ -48,11 +58,22 @@ export default function CheckoutPage() {
       const mappedDelivery = {
         name: delivery.name,
         phone: delivery.phone,
-        line1: delivery.address // map frontend `address` to `line1` used in backend templates
+        line1: delivery.line1,
+        line2: delivery.line2,
+        city: delivery.city,
+        state: delivery.state,
+        postalCode: delivery.postalCode,
+        country: delivery.country,
+        instructions: delivery.instructions
       };
       const payload = { delivery: mappedDelivery };
       const order = await createOrder(customer._id || customer.id, payload);
       setCart(null);
+
+      // refresh navbar/cart state
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('cart-updated'));
+      }
 
       // show email status to user and navigate to profile where orders are listed
       if (order && order.emailSent) {
@@ -96,16 +117,45 @@ export default function CheckoutPage() {
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label className="form-label">Name</label>
-              <input className="form-control" value={delivery.name} onChange={(e)=> setDelivery({...delivery, name: e.target.value})} />
+                <input className="form-control" value={delivery.name} onChange={(e)=> setDelivery({...delivery, name: e.target.value})} />
             </div>
             <div className="mb-3">
               <label className="form-label">Phone *</label>
-              <input className="form-control" value={delivery.phone} onChange={(e)=> setDelivery({...delivery, phone: e.target.value})} />
+                <input className="form-control" value={delivery.phone} onChange={(e)=> setDelivery({...delivery, phone: e.target.value})} />
             </div>
-            <div className="mb-3">
-              <label className="form-label">Address</label>
-              <textarea className="form-control" value={delivery.address} onChange={(e)=> setDelivery({...delivery, address: e.target.value})} />
-            </div>
+              <div className="mb-3">
+                <label className="form-label">Address line 1</label>
+                <input className="form-control" value={delivery.line1} onChange={(e)=> setDelivery({...delivery, line1: e.target.value})} />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Address line 2</label>
+                <input className="form-control" value={delivery.line2} onChange={(e)=> setDelivery({...delivery, line2: e.target.value})} />
+              </div>
+              <div className="row">
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">City</label>
+                  <input className="form-control" value={delivery.city} onChange={(e)=> setDelivery({...delivery, city: e.target.value})} />
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">State</label>
+                  <input className="form-control" value={delivery.state} onChange={(e)=> setDelivery({...delivery, state: e.target.value})} />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Postal code</label>
+                  <input className="form-control" value={delivery.postalCode} onChange={(e)=> setDelivery({...delivery, postalCode: e.target.value})} />
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Country</label>
+                  <input className="form-control" value={delivery.country} onChange={(e)=> setDelivery({...delivery, country: e.target.value})} />
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Delivery instructions (optional)</label>
+                <textarea className="form-control" value={delivery.instructions} onChange={(e)=> setDelivery({...delivery, instructions: e.target.value})} />
+              </div>
 
             <button className="btn btn-success" disabled={loading}>{loading ? 'Processing...' : 'Confirm order'}</button>
           </form>

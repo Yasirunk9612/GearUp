@@ -17,13 +17,17 @@ export default function ProductsPage() {
   }, []);
 
   const { customer } = useCustomer();
+  const { refreshCart } = useCustomer();
 
   const handleAdd = async (product) => {
     setErr(null);
     setMsg(null);
     try {
       await addOrUpdateCartItem(customer._id || customer.id, { productId: product._id || product.id, qty: 1 });
-      setMsg(`${product.name} added to cart`);
+  setMsg(`${product.name} added to cart`);
+  // notify context/navbar to refresh
+  if (refreshCart) refreshCart();
+  window.dispatchEvent(new CustomEvent('cart-updated'));
     } catch (e) {
       console.error(e);
       setErr('Failed to add to cart');
@@ -43,6 +47,15 @@ export default function ProductsPage() {
             products.map((p) => (
               <div className="col-md-4" key={p._id || p.id}>
                 <div className="card mb-3">
+                  { /* image area */ }
+                  <div style={{height: 180, overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f8f9fa'}}>
+                    <img
+                      src={p.imageUrl || p.image || 'https://via.placeholder.com/300x180?text=No+Image'}
+                      alt={p.name}
+                      style={{maxHeight: '100%', maxWidth: '100%', objectFit: 'contain'}}
+                      onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/300x180?text=No+Image'; }}
+                    />
+                  </div>
                   <div className="card-body">
                     <h5 className="card-title">{p.name}</h5>
                     <p className="card-text">{p.description || ''}</p>
