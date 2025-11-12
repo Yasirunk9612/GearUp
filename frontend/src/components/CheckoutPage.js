@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function CheckoutPage() {
   const [cart, setCart] = useState(null);
-  const { customer, setCustomer } = useCustomer();
+  const { customer } = useCustomer();
   const navigate = useNavigate();
   const [delivery, setDelivery] = useState({
     name: '',
