@@ -1,4 +1,4 @@
-# GearUp (Payment)
+# GearUp
 
 GearUp is a small full-stack demo that showcases a Node/Express + MongoDB backend and a React frontend. The project implements product listing, cart management, customer creation, and order creation (with a simple email helper). It includes a seeder to populate example products.
 
