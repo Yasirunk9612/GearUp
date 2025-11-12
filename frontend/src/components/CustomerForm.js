@@ -36,7 +36,7 @@ export default function CustomerForm() {
     setError(null);
     setMessage(null);
 
-    // Client-side validation
+
     const errors = [];
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRe = /^[0-9+\-()\s]{6,20}$/;

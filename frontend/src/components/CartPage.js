@@ -9,6 +9,7 @@ export default function CartPage() {
   const [err, setErr] = useState(null);
   const [msg, setMsg] = useState(null);
   const { customer } = useCustomer();
+  const { refreshCart } = useCustomer();
   const navigate = useNavigate();
 
 
@@ -49,7 +50,9 @@ export default function CartPage() {
       await addOrUpdateCartItem(customer._id || customer.id, { productId: editingItem.productId, qty });
       setMsg('Cart updated');
       setEditingItem(null);
-      await loadCart();
+  await loadCart();
+  if (refreshCart) refreshCart();
+  window.dispatchEvent(new CustomEvent('cart-updated'));
     } catch (e) {
       console.error(e);
       setErr('Failed to update qty');
@@ -74,7 +77,9 @@ export default function CartPage() {
     try {
       await removeCartItem(customer._id || customer.id, productId);
       setMsg('Item removed');
-      loadCart();
+  loadCart();
+  if (refreshCart) refreshCart();
+  window.dispatchEvent(new CustomEvent('cart-updated'));
     } catch (e) {
       console.error(e);
       setErr('Failed to remove item');
@@ -87,7 +92,9 @@ export default function CartPage() {
     try {
       await clearCart(customer._id || customer.id);
       setMsg('Cart cleared');
-      loadCart();
+  loadCart();
+  if (refreshCart) refreshCart();
+  window.dispatchEvent(new CustomEvent('cart-updated'));
     } catch (e) {
       console.error(e);
       setErr('Failed to clear cart');

@@ -34,7 +34,7 @@ const PORT = process.env.PORT || 5001;
 
 // When running tests we only want to export the app without connecting to DB or starting the listener.
 if (process.env.NODE_ENV !== 'test') {
-	// connectDB may be async; call it and start server after connection
+
 	(async () => {
 		try {
 			await connectDB();

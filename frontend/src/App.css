@@ -17,6 +17,18 @@
 /* small helpers for spacing in this simple intern UI */
 .py-4 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
 
+/* cart badge bump animation */
+.bump {
+  animation: bump 400ms ease-out;
+}
+
+@keyframes bump {
+  0% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(-4px) scale(1.08); }
+  60% { transform: translateY(0) scale(1.03); }
+  100% { transform: translateY(0) scale(1); }
+}
+
 /* Landing hero */
 .landing-hero {
   background: linear-gradient(135deg,#4e54c8 0%, #8f94fb 100%);

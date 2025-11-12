@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useCustomer } from '../contexts/CustomerContext';
-import { getCartByCustomer } from '../api';
 
 export default function Navbar() {
-  const { customer } = useCustomer();
+  const { customer, cartCount } = useCustomer();
   const [count, setCount] = useState(0);
+  const [bump, setBump] = useState(false);
   const location = useLocation();
+  const prevCountRef = React.useRef(0);
 
   useEffect(() => {
-    const load = async () => {
-      if (!customer) return setCount(0);
-      try {
-        const cart = await getCartByCustomer(customer._id || customer.id);
-        const qty = (cart?.items || []).reduce((s, i) => s + (i.qty || 0), 0);
-        setCount(qty);
-      } catch (e) {
-        setCount(0);
-      }
-    };
-    load();
-    // also attempt to refresh when the route changes (simple heuristic)
-  }, [customer, location]);
+    // Use cartCount from context when available for real-time updates
+    const newCount = cartCount || 0;
+    setCount(newCount);
+    // bump animation when count increases
+    if (newCount > (prevCountRef.current || 0)) {
+      setBump(true);
+      const t = setTimeout(() => setBump(false), 450);
+      return () => clearTimeout(t);
+    }
+    prevCountRef.current = newCount;
+  }, [cartCount]);
 
   const logoPath = `${process.env.PUBLIC_URL}/gear.jpg`;
 
@@ -39,8 +38,8 @@ export default function Navbar() {
             <>
               <Link to="/profile" className="me-3 text-decoration-none">My Profile</Link>
               <span className="me-3 text-muted small d-none d-md-inline">{customer.name}</span>
-              <Link to="/cart" className="btn btn-outline-secondary btn-sm me-2 position-relative" title="Cart">
-                🛒
+              <Link to="/cart" className={`btn btn-outline-secondary btn-sm me-2 position-relative ${bump ? 'bump' : ''}`} title="Cart">
+                <span style={{fontSize: '1.1rem'}}>🛒</span>
                 {count > 0 && (
                   <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{fontSize:'0.6rem'}}>
                     {count}

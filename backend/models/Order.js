@@ -18,7 +18,8 @@ const orderSchema = new mongoose.Schema({
     state: String,
     postalCode: String,
     country: String,
-    phone: String
+    phone: String,
+    instructions: String
   },
   status: { type: String, default: 'Pending' }, 
   emailSent: { type: Boolean, default: false },
