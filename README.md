@@ -360,17 +360,3 @@ Frontend (`frontend/package.json`):
 ## .gitignore
 
 This repo includes a `.gitignore` at the project root. Common items ignored include `node_modules`, `.env` files, build artifacts, editor settings, and test coverage output.
-
-## Next steps (suggested)
-
-- Replace the small placeholder model test with focused schema/unit tests for models.
-- Add CI (GitHub Actions) to run tests on pushes and PRs. If you want I can add a workflow that installs deps and runs `npm test` in `backend/`.
-- Add linting and pre-commit hooks (husky + lint-staged) for consistent style.
-
-## Contributing
-
-If you'd like to contribute, open an issue first to discuss changes. Pull requests should be small and focused. Please avoid committing secrets such as `.env` files or credentials.
-
----
-
-If you'd like, I can now add model-level unit tests or a GitHub Actions workflow to run tests automatically — tell me which and I'll implement it.
