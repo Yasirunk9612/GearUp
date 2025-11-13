@@ -9,10 +9,8 @@ export default function Navbar() {
   const prevCountRef = React.useRef(0);
 
   useEffect(() => {
-    // Use cartCount from context when available for real-time updates
     const newCount = cartCount || 0;
     setCount(newCount);
-    // bump animation when count increases
     if (newCount > (prevCountRef.current || 0)) {
       setBump(true);
       const t = setTimeout(() => setBump(false), 450);
@@ -24,33 +22,38 @@ export default function Navbar() {
   const logoPath = `${process.env.PUBLIC_URL}/gear.jpg`;
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-      <div className="container">
-        <Link className="navbar-brand d-flex align-items-center" to="/">
-          <img src={logoPath} alt="GearUp" width="40" height="40" className="me-2" />
-          <span className="fw-bold">GearUp</span>
+    <header className="navbar-modern shadow-sm">
+      <div className="container d-flex align-items-center justify-content-between">
+        <Link to="/" className="brand d-flex align-items-center text-decoration-none">
+          <div className="brand-logo">
+            <img src={logoPath} alt="GearUp" />
+          </div>
+          <div className="brand-text">
+            <div className="fw-bold">GearUp</div>
+            <small className="text-light-opacity">Intern demo</small>
+          </div>
         </Link>
 
-        <div className="d-flex align-items-center">
-          <Link to="/products" className="me-3 text-decoration-none">Products</Link>
+        <nav className="nav-items d-flex align-items-center">
+          <Link to="/products" className="nav-link me-3">Products</Link>
           {customer ? (
             <>
-              <Link to="/profile" className="me-3 text-decoration-none">My Profile</Link>
-              <span className="me-3 text-muted small d-none d-md-inline">{customer.name}</span>
-              <Link to="/cart" className={`btn btn-outline-secondary btn-sm me-2 position-relative ${bump ? 'bump' : ''}`} title="Cart">
-                <span style={{fontSize: '1.1rem'}}>🛒</span>
-                {count > 0 && (
-                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{fontSize:'0.6rem'}}>
-                    {count}
-                  </span>
-                )}
-              </Link>
+              <Link to="/profile" className="nav-link me-3 d-none d-md-inline">My Profile</Link>
+              <div className="d-flex align-items-center">
+                <span className="user-name me-3 d-none d-md-inline">{customer.name}</span>
+                <Link to="/cart" className={`cart-btn btn btn-sm me-2 position-relative ${bump ? 'bump' : ''}`} title="Cart">
+                  <span className="cart-emoji">🛒</span>
+                  {count > 0 && (
+                    <span className="cart-badge">{count}</span>
+                  )}
+                </Link>
+              </div>
             </>
           ) : (
-            <Link to="/customer" className="btn btn-outline-primary btn-sm">Add customer</Link>
+            <Link to="/customer" className="btn btn-light btn-sm">Add customer</Link>
           )}
-        </div>
+        </nav>
       </div>
-    </nav>
+    </header>
   );
 }

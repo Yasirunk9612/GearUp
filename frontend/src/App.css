@@ -17,6 +17,16 @@
 /* small helpers for spacing in this simple intern UI */
 .py-4 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
 
+/* Layout: make footer stick to bottom when content is short */
+.app-root {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.main-content {
+  flex: 1 0 auto; /* allow main area to grow and push footer down */
+}
+
 /* cart badge bump animation */
 .bump {
   animation: bump 400ms ease-out;
@@ -38,3 +48,57 @@
 
 /* Footer tweaks */
 footer small { opacity: 0.9; }
+
+/* Modern navbar styles using existing brand gradient colors */
+.navbar-modern {
+  background: linear-gradient(90deg,#4e54c8 0%, #8f94fb 100%);
+  color: #fff;
+  padding: 0.5rem 0;
+}
+.navbar-modern .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.navbar-modern .brand {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.brand-logo img { width: 32px; height: 32px; object-fit: cover; }
+.brand-text .text-light-opacity { color: rgba(255,255,255,0.85); font-size: 0.75rem; }
+.brand-text .fw-bold { color: #ffffff; }
+.nav-items .nav-link { color: rgba(255,255,255,0.95); text-decoration:none; font-weight:500; }
+.nav-items .nav-link:hover { color: #fff; text-decoration:underline; }
+.user-name { color: rgba(255,255,255,0.9); font-size:0.9rem; }
+.cart-btn { background: rgba(255,255,255,0.12); border: none; color: #fff; border-radius: 8px; padding: 6px 10px; }
+.cart-btn:hover { background: rgb(255, 255, 255); }
+.cart-emoji { font-size: 1.05rem; }
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #ff6b6b;
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.65rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* small responsive tweak */
+@media (max-width: 576px) {
+  .brand-text { display: none; }
+  .user-name { display: none; }
+  .nav-items .nav-link { margin-right: 0.5rem; }
+}
